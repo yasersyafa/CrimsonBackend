@@ -16,6 +16,10 @@ public class GameData
     [ForeignKey("Player")]
     public Guid PlayerId { get; set; }
     
+    public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+    
+    public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
+    
     // Navigation property
     public Player? Player { get; set; }
 }

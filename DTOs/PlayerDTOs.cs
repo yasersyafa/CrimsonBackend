@@ -22,6 +22,8 @@ public class PlayerResponse
     public string Nickname { get; set; } = string.Empty;
     public int Score { get; set; }
     public int Coin { get; set; }
+    public DateTime CreatedAt { get; set; }
+    public DateTime UpdatedAt { get; set; }
 }
 
 public class LeaderboardEntry
@@ -30,6 +32,8 @@ public class LeaderboardEntry
     public string Nickname { get; set; } = string.Empty;
     public int Score { get; set; }
     public int Coin { get; set; }
+    public DateTime CreatedAt { get; set; }
+    public DateTime UpdatedAt { get; set; }
 }
 
 public class SavePlayerDataRequest

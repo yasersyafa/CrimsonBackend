@@ -69,7 +69,9 @@ public class PlayerController(ApplicationDbContext context, ILogger<PlayerContro
                 PlayerId = player.Id,
                 Nickname = player.Nickname,
                 Score = gameData.Score,
-                Coin = gameData.Coin
+                Coin = gameData.Coin,
+                CreatedAt = player.CreatedAt,
+                UpdatedAt = player.UpdatedAt
             });
         }
         catch (Exception ex)
@@ -129,7 +131,9 @@ public class PlayerController(ApplicationDbContext context, ILogger<PlayerContro
                     PlayerId = player.Id,
                     Nickname = player.Nickname,
                     Score = 0,
-                    Coin = 0
+                    Coin = 0,
+                    CreatedAt = player.CreatedAt,
+                    UpdatedAt = player.UpdatedAt
                 });
             }
 
@@ -140,7 +144,9 @@ public class PlayerController(ApplicationDbContext context, ILogger<PlayerContro
                 PlayerId = player.Id,
                 Nickname = player.Nickname,
                 Score = player.GameData.Score,
-                Coin = player.GameData.Coin
+                Coin = player.GameData.Coin,
+                CreatedAt = player.CreatedAt,
+                UpdatedAt = player.UpdatedAt
             });
         }
         catch (Exception ex)
@@ -195,6 +201,9 @@ public class PlayerController(ApplicationDbContext context, ILogger<PlayerContro
             }
 
             await _context.SaveChangesAsync();
+            
+            // Reload player to get updated timestamp
+            await _context.Entry(player).ReloadAsync();
 
             _logger.LogInformation($"Player data saved: {player.Id} - Score: {request.Score}, Coin: {request.Coin}");
 
@@ -203,7 +212,9 @@ public class PlayerController(ApplicationDbContext context, ILogger<PlayerContro
                 PlayerId = player.Id,
                 Nickname = player.Nickname,
                 Score = request.Score,
-                Coin = request.Coin
+                Coin = request.Coin,
+                CreatedAt = player.CreatedAt,
+                UpdatedAt = player.UpdatedAt
             });
         }
         catch (Exception ex)
@@ -245,7 +256,9 @@ public class PlayerController(ApplicationDbContext context, ILogger<PlayerContro
                     Rank = index + 1,
                     Nickname = gd.Player!.Nickname,
                     Score = gd.Score,
-                    Coin = gd.Coin
+                    Coin = gd.Coin,
+                    CreatedAt = gd.Player!.CreatedAt,
+                    UpdatedAt = gd.UpdatedAt
                 })
                 .ToList();
 
