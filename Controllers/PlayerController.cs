@@ -7,7 +7,7 @@ using CrimsonBackend.DTOs;
 namespace CrimsonBackend.Controllers;
 
 [ApiController]
-[Route("[controller]")]
+[Route("api/[controller]")]
 public class PlayerController(ApplicationDbContext context, ILogger<PlayerController> logger) : ControllerBase
 {
     private readonly ApplicationDbContext _context = context;
@@ -218,7 +218,7 @@ public class PlayerController(ApplicationDbContext context, ILogger<PlayerContro
     /// </summary>
     /// <param name="top">Optional parameter to limit the number of results (default: 10)</param>
     /// <returns>List of leaderboard entries with rank, nickname, score, and coins</returns>
-    [HttpGet("/leaderboard")]
+    [HttpGet("leaderboard")]
     public async Task<ActionResult<List<LeaderboardEntry>>> GetLeaderboard([FromQuery] int? top = 10)
     {
         try
