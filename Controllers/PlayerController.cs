@@ -230,11 +230,16 @@ public class PlayerController(ApplicationDbContext context, ILogger<PlayerContro
 
             var limit = top ?? 10;
 
-            var leaderboard = await _context.GameDatas
+            // First, query the database and bring data to memory
+            var gameDatas = await _context.GameDatas
                 .Include(gd => gd.Player)
                 .OrderByDescending(gd => gd.Score)
                 .ThenByDescending(gd => gd.Coin)
                 .Take(limit)
+                .ToListAsync();
+
+            // Then, create leaderboard entries with rank in memory (client-side)
+            var leaderboard = gameDatas
                 .Select((gd, index) => new LeaderboardEntry
                 {
                     Rank = index + 1,
@@ -242,15 +247,9 @@ public class PlayerController(ApplicationDbContext context, ILogger<PlayerContro
                     Score = gd.Score,
                     Coin = gd.Coin
                 })
-                .ToListAsync();
+                .ToList();
 
-            // Fix rank numbering
-            for (int i = 0; i < leaderboard.Count; i++)
-            {
-                leaderboard[i].Rank = i + 1;
-            }
-
-            _logger.LogInformation($"Leaderboard retrieved: Top {limit}");
+            _logger.LogInformation($"Leaderboard retrieved: Top {limit}, Total entries: {leaderboard.Count}");
 
             return Ok(leaderboard);
         }
