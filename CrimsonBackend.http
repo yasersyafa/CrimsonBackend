@@ -1,0 +1,6 @@
+@CrimsonBackend_HostAddress = http://localhost:5285
+
+GET {{CrimsonBackend_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
